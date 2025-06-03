@@ -8,12 +8,20 @@ const express = require("express");
 const api = express();
 api.listen(3000);
 
+// middleware ##########################################################################################################
+
+api.use(express.json());
+
+// routes ##############################################################################################################
+
+api.use("/signin", require("./routes/signin.js"));
+api.use("/register", require("./routes/register.js"));
+
 // get root ############################################################################################################
 
 api.get("/", (request, response) => {
-  const render = `
+  response.send(`
     <h1>SmartBrain API</h1>
     <p>BackEnd server for the SmartBrain face detection webapp.</p>
-  `;
-  response.send(render);
+  `);
 });
