@@ -5,23 +5,38 @@
 //######################################################################################################################
 
 const router = require("express").Router();
-const dataBase = {users: [
-  {id: 123, name: "John Doe", email: "john@gmail.com", password: "cookies", detects: 0, lastLogin: new Date()},
-  {id: 124, name: "Sally Doe", email: "sally@gmail.com", password: "bananas", detects: 0, lastLogin: new Date()},
-]};
+const fileSystem = require("fs");
 
-// post register #######################################################################################################
+// post /register ######################################################################################################
 
 router.post("/", (request, response) => {
-  dataBase.users.push({
-    id: 125,
+
+  // no database file > error ------------------------------------------------------------------------------------------
+
+  if (!fileSystem.existsSync("users.json")) {
+    response.status(404).send(`<p>${request.originalUrl} database not found</p>`);
+  };
+  
+  // reading file > parsing content ------------------------------------------------------------------------------------
+
+  const fileContent = fileSystem.readFileSync("users.json", "utf-8");
+  const users = JSON.parse(fileContent);
+
+  // registering new user ----------------------------------------------------------------------------------------------
+
+  users[Math.max(...Object.keys(users))+1] = {
     name: request.body.name,
     email: request.body.email,
     password: request.body.password,
     detects: 0,
     lastLogin: new Date(),
-  });
-  response.json(dataBase.users[dataBase.users.length-1]);
+  };
+  
+  // writing file > returning new user ---------------------------------------------------------------------------------
+
+  fileSystem.writeFileSync("users.json", JSON.stringify(users));
+  response.json(users);
+
 });
 
 // exports #############################################################################################################
