@@ -17,6 +17,7 @@ api.use(express.json());
 api.use("/register", require("./routes/register.js"));
 api.use("/signin", require("./routes/signin.js"));
 api.use("/profile", require("./routes/profile.js"));
+api.use("/detect", require("./routes/detect.js"));
 
 // get root ############################################################################################################
 

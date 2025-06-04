@@ -3,14 +3,14 @@
         "name": "John Doe",
         "email": "john@gmail.com",
         "password": "cookies",
-        "detects": 0,
+        "detects": 4,
         "lastLogin": "2025-06-04T13:38:37.853Z"
     },
     "124": {
         "name": "Sally Doe",
         "email": "sally@gmail.com",
         "password": "bananas",
-        "detects": 0,
+        "detects": 3,
         "lastLogin": "2025-06-04T13:41:36.295Z"
     }
 }
