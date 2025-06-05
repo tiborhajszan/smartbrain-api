@@ -12,19 +12,23 @@ const fileSystem = require("fs");
 router.post("/", (request, response) => {
 
   // no database file > error ------------------------------------------------------------------------------------------
-
   if (!fileSystem.existsSync("users.json")) {
     response.status(404).send(`<p>${request.originalUrl} database not found</p>`);
   };
   
   // reading file > parsing content ------------------------------------------------------------------------------------
-
   const fileContent = fileSystem.readFileSync("users.json", "utf-8");
   const users = JSON.parse(fileContent);
 
-  // registering new user ----------------------------------------------------------------------------------------------
+  // creating user id --------------------------------------------------------------------------------------------------
+  let userId = 1;
+  if (Object.keys(users).length !== 0) {
+    userId = Math.max(...Object.keys(users)) + 1;
+  };
 
-  users[Math.max(...Object.keys(users))+1] = {
+  // registering new user ----------------------------------------------------------------------------------------------
+  users[userId] = {
+    id: userId,
     name: request.body.name,
     email: request.body.email,
     password: request.body.password,
@@ -33,9 +37,8 @@ router.post("/", (request, response) => {
   };
   
   // writing file > returning new user ---------------------------------------------------------------------------------
-
   fileSystem.writeFileSync("users.json", JSON.stringify(users));
-  response.json(users);
+  response.json(users[userId]);
 
 });
 
