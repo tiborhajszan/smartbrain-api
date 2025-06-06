@@ -30,7 +30,7 @@ router.post("/", (request, response) => {
     };
   };
 
-  // creating user id --------------------------------------------------------------------------------------------------
+  // creating new user id ----------------------------------------------------------------------------------------------
   let userId = 1;
   if (Object.keys(users).length !== 0) {
     userId = Math.max(...Object.keys(users)) + 1;
@@ -46,7 +46,7 @@ router.post("/", (request, response) => {
     lastLogin: new Date(),
   };
   
-  // writing database file > returning new user record -----------------------------------------------------------------
+  // writing database file > returning new user profile ----------------------------------------------------------------
   fileSystem.writeFileSync("users.json", JSON.stringify(users));
   response.json(users[userId]);
 
