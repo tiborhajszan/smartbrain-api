@@ -2,26 +2,32 @@
   "name": "smartbrain-api",
   "version": "1.0.0",
   "description": "Back end server for the SmartBrain face detection webapp.",
-  "main": "server.js",
-  "scripts": {
-    "start": "node --watch server.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/tiborhajszan/smartbrain-api.git"
-  },
+  "author": "Tibor Hajszan, MD, PhD",
+  "license": "MIT",
+
   "keywords": [
     "backend",
     "RESTful API",
     "express.js"
   ],
-  "author": "Tibor Hajszan, MD, PhD",
-  "license": "MIT",
+
+  "homepage": "https://github.com/tiborhajszan/smartbrain-api#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tiborhajszan/smartbrain-api.git"
+  },
   "bugs": {
     "url": "https://github.com/tiborhajszan/smartbrain-api/issues"
   },
-  "homepage": "https://github.com/tiborhajszan/smartbrain-api#readme",
+
+  "main": "server.js",
+
+  "scripts": {
+    "start": "node --watch server.js"
+  },
+
   "dependencies": {
+    "bcrypt-nodejs": "^0.0.3",
     "express": "^5.1.0"
   }
 }
