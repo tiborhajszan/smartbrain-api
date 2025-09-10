@@ -1,5 +1,4 @@
 //######################################################################################################################
-//  Zero To Mastery Academy
 //  Complete Web Developer in 2025: Zero to Mastery
 //  Final Project | SmartBrain API | BackEnd Server
 //######################################################################################################################
@@ -24,6 +23,6 @@ api.use("/detect", require("./routes/detect.js"));
 api.get("/", (request, response) => {
   response.send(`
     <h1>SmartBrain API</h1>
-    <p>BackEnd server for the SmartBrain face detection webapp.</p>
+    <p>Server for the SmartBrain Face Detector web application.</p>
   `);
 });
