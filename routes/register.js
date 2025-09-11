@@ -48,9 +48,9 @@ router.post("/", (request, response) => {
 
   // existing user > error ---------------------------------------------------------------------------------------------
 
-  for (const user of Object.values(userDB)) {
+  for (let user of Object.values(userDB)) {
     if (request.body.email === user.email) {
-      response.status(400).send("Register Error : user already exists");
+      response.status(400).send("Register Error");
       return;
     };
   };
@@ -76,7 +76,7 @@ router.post("/", (request, response) => {
   // writing database file > returning new user profile ----------------------------------------------------------------
 
   fileSystem.writeFileSync("users.json", JSON.stringify(userDB));
-  response.json(userDB[userId]);
+  response.status(200).json(userDB[userId]);
 
   return;
 });
