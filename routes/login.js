@@ -14,7 +14,7 @@ router.post("/", (request, response) => {
   // no database file > error ------------------------------------------------------------------------------------------
 
   if (!fileSystem.existsSync("users.json")) {
-    response.status(404).send("Login Failed : user database not found");
+    response.status(500).send("Server Error");
     return;
   };
   
