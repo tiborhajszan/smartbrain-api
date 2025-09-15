@@ -14,7 +14,10 @@ router.post("/", (request, response) => {
   // no database file > error ------------------------------------------------------------------------------------------
 
   if (!fileSystem.existsSync("users.json")) {
-    response.status(500).send("Server Error");
+    response.status(200).json({
+      status: false,
+      message: "Server Error"
+    });
     return;
   };
   
@@ -28,14 +31,20 @@ router.post("/", (request, response) => {
   for (let user of Object.values(userDB)) {
     if (request.body.email === user.email
     && bcrypt.compareSync(request.body.password, user.password)) {
-      response.status(200).json(user);
+      response.status(200).json({
+        status: true,
+        user: user
+      });
       return;
     };
   };
   
   // user not found > error --------------------------------------------------------------------------------------------
 
-  response.status(400).send("Login Failed");
+  response.status(200).send({
+    status: false,
+    message: "Login Error"
+  });
   
   return;
 });
