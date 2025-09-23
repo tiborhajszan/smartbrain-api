@@ -11,12 +11,12 @@ const bcrypt = require("bcrypt-nodejs");
 
 router.post("/", (request, response) => {
 
-  // no database file > error ------------------------------------------------------------------------------------------
+  // no database file > sending error ----------------------------------------------------------------------------------
 
   if (!fileSystem.existsSync("users.json")) {
     response.status(200).json({
       status: false,
-      message: "Server Error"
+      message: "Server error : Try again later."
     });
     return;
   };
@@ -26,7 +26,7 @@ router.post("/", (request, response) => {
   const fileContent = fileSystem.readFileSync("users.json", "utf-8");
   const userDB = JSON.parse(fileContent);
 
-  // user found > returning user profile -------------------------------------------------------------------------------
+  // user found > sending user profile ---------------------------------------------------------------------------------
 
   for (let user of Object.values(userDB)) {
     if (request.body.email === user.email
@@ -39,12 +39,14 @@ router.post("/", (request, response) => {
     };
   };
   
-  // user not found > error --------------------------------------------------------------------------------------------
+  // user not found > sending error ------------------------------------------------------------------------------------
 
   response.status(200).send({
     status: false,
-    message: "Login Error"
+    message: "Login failed : Try again."
   });
+
+  // returning ---------------------------------------------------------------------------------------------------------
   
   return;
 });
