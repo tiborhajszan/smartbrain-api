@@ -13,8 +13,8 @@ api.use(express.json());
 
 // routes ##############################################################################################################
 
-api.use("/register", require("./routes/register.js"));
 api.use("/login", require("./routes/login.js"));
+api.use("/register", require("./routes/register.js"));
 api.use("/profile", require("./routes/profile.js"));
 api.use("/detect", require("./routes/detect.js"));
 

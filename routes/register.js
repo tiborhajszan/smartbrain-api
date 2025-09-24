@@ -11,33 +11,47 @@ const bcrypt = require("bcrypt-nodejs");
 
 router.post("/", (request, response) => {
 
-  // invalid username > error ------------------------------------------------------------------------------------------
+  // invalid username > sending error ----------------------------------------------------------------------------------
 
-  if (!request.body.name || 100 < request.body.name.length) {
-    response.status(400).send("Register Error : invalid username");
+  if (!request.body.name.trim() || 100 < request.body.name.length) {
+    response.status(200).json({
+      status: false,
+      message: "Registering failed : Invalid username."
+    });
     return;
   };
 
-  // invalid email > error ---------------------------------------------------------------------------------------------
+  // invalid email > sending error -------------------------------------------------------------------------------------
 
   const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-  if (!request.body.email || 100 < request.body.email.length || !emailRegex.test(request.body.email)) {
-    response.status(400).send("Register Error : invalid email");
+  if (!request.body.email.trim() || 100 < request.body.email.length || !emailRegex.test(request.body.email)) {
+    response.status(200).json({
+      status: false,
+      message: "Registering failed : Invalid email."
+    });
     return;
   };
   
-  // invalid password > error ------------------------------------------------------------------------------------------
+  // invalid password > sending error ----------------------------------------------------------------------------------
 
   const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^a-zA-Z0-9])(?=.{10,})/;
-  if (!request.body.password || 50 < request.body.password.length || !passwordRegex.test(request.body.password)) {
-    response.status(400).send("Register Error : invalid password");
+  if (!request.body.password.trim()
+  || 50 < request.body.password.length
+  || !passwordRegex.test(request.body.password)) {
+    response.status(200).json({
+      status: false,
+      message: "Registering failed : Invalid password."
+    });
     return;
   };
 
-  // no database file > error ------------------------------------------------------------------------------------------
+  // no database file > sending error ----------------------------------------------------------------------------------
   
   if (!fileSystem.existsSync("users.json")) {
-    response.status(404).send("Register Error : user database not found");
+    response.status(200).json({
+      status: false,
+      message: "Server error : Try again later."
+    });
     return;
   };
   
@@ -46,11 +60,14 @@ router.post("/", (request, response) => {
   const fileContent = fileSystem.readFileSync("users.json", "utf-8");
   const userDB = JSON.parse(fileContent);
 
-  // existing user > error ---------------------------------------------------------------------------------------------
+  // existing user > sending error -------------------------------------------------------------------------------------
 
   for (let user of Object.values(userDB)) {
     if (request.body.email === user.email) {
-      response.status(400).send("Register Error");
+      response.status(200).json({
+        status: false,
+        message: "Registering failed : Try another email."
+      });
       return;
     };
   };
@@ -73,10 +90,15 @@ router.post("/", (request, response) => {
     lastLogin: new Date(),
   };
   
-  // writing database file > returning new user profile ----------------------------------------------------------------
+  // writing database file > sending new user profile ------------------------------------------------------------------
 
   fileSystem.writeFileSync("users.json", JSON.stringify(userDB));
-  response.status(200).json(userDB[userId]);
+  response.status(200).json({
+    status: true,
+    user: userDB[userId]
+  });
+
+  // returning ---------------------------------------------------------------------------------------------------------
 
   return;
 });
