@@ -33,7 +33,11 @@ router.post("/", (request, response) => {
     && bcrypt.compareSync(request.body.password, user.password)) {
       response.status(200).json({
         status: true,
-        user: user
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        detects: user.detects,
+        lastLogin: user.lastLogin
       });
       return;
     };

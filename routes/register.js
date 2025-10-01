@@ -95,7 +95,11 @@ router.post("/", (request, response) => {
   fileSystem.writeFileSync("users.json", JSON.stringify(userDB));
   response.status(200).json({
     status: true,
-    user: userDB[userId]
+    id: userDB[userId].id,
+    name: userDB[userId].name,
+    email: userDB[userId].email,
+    detects: userDB[userId].detects,
+    lastLogin: userDB[userId].lastLogin
   });
 
   // returning ---------------------------------------------------------------------------------------------------------
