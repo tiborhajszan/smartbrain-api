@@ -1,6 +1,5 @@
 {
     "123": {
-        "id": 123,
         "name": "John Doe",
         "email": "john@gmail.com",
         "password": "$2a$10$0JyLp0PHL3nJR/ci2qD4cuUAmZRgQKyyB01wmMhdqQlYv17/JVUN2",
@@ -8,7 +7,6 @@
         "lastLogin": "2025-06-06T12:58:35.603Z"
     },
     "124": {
-        "id": 124,
         "name": "Sally Doe",
         "email": "sally@gmail.com",
         "password": "$2a$10$8ZZ.ri3FKD0d3Gi264FGhek6D8AvQSqAQlCtt9pYEU1oNs5l9QEZy",
@@ -16,7 +14,6 @@
         "lastLogin": "2025-06-06T12:59:43.233Z"
     },
     "125": {
-        "id": 125,
         "name": "Ann Doe",
         "email": "ann@gmail.com",
         "password": "$2a$10$egGs7vxP0gGt9LHiMuxybOgC6ajFVxusqzLGFPraePFz7lHgWXgLq",

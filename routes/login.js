@@ -16,7 +16,7 @@ router.post("/", (request, response) => {
   if (!fileSystem.existsSync("users.json")) {
     response.status(200).json({
       status: false,
-      message: "Server error : Try again later."
+      message: "Login Failed : User database not found."
     });
     return;
   };
@@ -28,16 +28,16 @@ router.post("/", (request, response) => {
 
   // user found > sending user profile ---------------------------------------------------------------------------------
 
-  for (let user of Object.values(userDB)) {
-    if (request.body.email === user.email
-    && bcrypt.compareSync(request.body.password, user.password)) {
+  for (let key of Object.keys(userDB)) {
+    if (request.body.email === userDB[key].email
+    && bcrypt.compareSync(request.body.password, userDB[key].password)) {
       response.status(200).json({
         status: true,
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        detects: user.detects,
-        lastLogin: user.lastLogin
+        id: Number(key),
+        name: userDB[key].name,
+        email: userDB[key].email,
+        detects: userDB[key].detects,
+        lastLogin: userDB[key].lastLogin
       });
       return;
     };
@@ -45,14 +45,15 @@ router.post("/", (request, response) => {
   
   // user not found > sending error ------------------------------------------------------------------------------------
 
-  response.status(200).send({
+  response.status(200).json({
     status: false,
-    message: "Login failed : Try again."
+    message: "Login Failed"
   });
 
-  // returning ---------------------------------------------------------------------------------------------------------
+  // method ends -------------------------------------------------------------------------------------------------------
   
   return;
+
 });
 
 // exports #############################################################################################################
