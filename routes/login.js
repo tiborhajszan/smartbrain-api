@@ -16,7 +16,7 @@ router.post("/", (request, response) => {
   if (!fileSystem.existsSync("users.json")) {
     response.status(200).json({
       status: false,
-      message: "Login Failed : User database not found."
+      message: "User Database Error"
     });
     return;
   };
