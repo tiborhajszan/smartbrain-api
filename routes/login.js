@@ -28,7 +28,7 @@ router.post("/", (request, response) => {
 
   // user found > sending user profile ---------------------------------------------------------------------------------
 
-  for (let key of Object.keys(userDB)) {
+  for (let key in userDB) {
     if (request.body.email === userDB[key].email
     && bcrypt.compareSync(request.body.password, userDB[key].password)) {
       response.status(200).json({
