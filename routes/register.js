@@ -13,10 +13,11 @@ router.post("/", (request, response) => {
 
   // invalid username > sending error ----------------------------------------------------------------------------------
 
-  if (!request.body.name.trim() || 100 < request.body.name.length) {
+  if (request.body.name.trim().length === 0
+  || 100 < request.body.name.length) {
     response.status(200).json({
       status: false,
-      message: "Registering failed : Invalid username."
+      message: "Invalid Username"
     });
     return;
   };
@@ -24,23 +25,25 @@ router.post("/", (request, response) => {
   // invalid email > sending error -------------------------------------------------------------------------------------
 
   const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-  if (!request.body.email.trim() || 100 < request.body.email.length || !emailRegex.test(request.body.email)) {
+  if (request.body.email.trim().length === 0
+  || 100 < request.body.email.length
+  || !emailRegex.test(request.body.email)) {
     response.status(200).json({
       status: false,
-      message: "Registering failed : Invalid email."
+      message: "Invalid Email Address"
     });
     return;
   };
   
   // invalid password > sending error ----------------------------------------------------------------------------------
 
-  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^a-zA-Z0-9])(?=.{10,})/;
-  if (!request.body.password.trim()
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^a-zA-Z0-9])(?=.{8,})/;
+  if (request.body.password.trim().length === 0
   || 50 < request.body.password.length
   || !passwordRegex.test(request.body.password)) {
     response.status(200).json({
       status: false,
-      message: "Registering failed : Invalid password."
+      message: "Invalid Password"
     });
     return;
   };
@@ -50,15 +53,23 @@ router.post("/", (request, response) => {
   if (!fileSystem.existsSync("users.json")) {
     response.status(200).json({
       status: false,
-      message: "Server error : Try again later."
+      message: "User Database Error"
     });
     return;
   };
   
   // reading database file > parsing content ---------------------------------------------------------------------------
 
-  const fileContent = fileSystem.readFileSync("users.json", "utf-8");
-  const userDB = JSON.parse(fileContent);
+  try {
+    const fileContent = fileSystem.readFileSync("users.json", "utf-8");
+    const userDB = JSON.parse(fileContent);
+  } catch {
+    response.status(200).json({
+      status: false,
+      message: "User Database Error"
+    });
+    return;
+  };
 
   // existing user > sending error -------------------------------------------------------------------------------------
 
@@ -66,7 +77,7 @@ router.post("/", (request, response) => {
     if (request.body.email === user.email) {
       response.status(200).json({
         status: false,
-        message: "Registering failed : Try another email."
+        message: "Registering Failed"
       });
       return;
     };
@@ -82,12 +93,11 @@ router.post("/", (request, response) => {
   // creating new user record ------------------------------------------------------------------------------------------
 
   userDB[userId] = {
-    id: userId,
     name: request.body.name,
     email: request.body.email,
     password: bcrypt.hashSync(request.body.password),
     detects: 0,
-    lastLogin: new Date(),
+    lastLogin: new Date()
   };
   
   // writing database file > sending new user profile ------------------------------------------------------------------
@@ -95,14 +105,14 @@ router.post("/", (request, response) => {
   fileSystem.writeFileSync("users.json", JSON.stringify(userDB));
   response.status(200).json({
     status: true,
-    id: userDB[userId].id,
+    id: userId,
     name: userDB[userId].name,
     email: userDB[userId].email,
     detects: userDB[userId].detects,
     lastLogin: userDB[userId].lastLogin
   });
 
-  // returning ---------------------------------------------------------------------------------------------------------
+  // method ends -------------------------------------------------------------------------------------------------------
 
   return;
 });

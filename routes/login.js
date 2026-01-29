@@ -28,16 +28,16 @@ router.post("/", (request, response) => {
 
   // user found > sending user profile ---------------------------------------------------------------------------------
 
-  for (let key in userDB) {
-    if (request.body.email === userDB[key].email
-    && bcrypt.compareSync(request.body.password, userDB[key].password)) {
+  for (let userId in userDB) {
+    if (request.body.email === userDB[userId].email
+    && bcrypt.compareSync(request.body.password, userDB[userId].password)) {
       response.status(200).json({
         status: true,
-        id: Number(key),
-        name: userDB[key].name,
-        email: userDB[key].email,
-        detects: userDB[key].detects,
-        lastLogin: userDB[key].lastLogin
+        id: Number(userId),
+        name: userDB[userId].name,
+        email: userDB[userId].email,
+        detects: userDB[userId].detects,
+        lastLogin: userDB[userId].lastLogin
       });
       return;
     };
@@ -53,7 +53,6 @@ router.post("/", (request, response) => {
   // method ends -------------------------------------------------------------------------------------------------------
   
   return;
-
 });
 
 // exports #############################################################################################################
